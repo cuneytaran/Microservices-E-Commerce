@@ -17,10 +17,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    // uygulama çalışırken localde burası çalışır.
     "FreeCourse.Services.Catalog": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
-      "launchBrowser": false,
+      "launchBrowser": false,//Tarayıcıda ayağa kalkmasını engelliyoruz.
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5011",
       "environmentVariables": {

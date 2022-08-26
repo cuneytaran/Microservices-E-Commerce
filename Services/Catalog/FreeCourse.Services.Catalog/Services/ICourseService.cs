@@ -21,4 +21,5 @@ namespace FreeCourse.Services.Catalog.Services
 
         Task<Response<NoContent>> DeleteAsync(string id);
     }
+    //eklenen interface i startup a eklemeyi unutma
 }

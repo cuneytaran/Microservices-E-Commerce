@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FreeCourse.Shared.ControllerBases
 {
+    //Tüm microservislerin ortak olarak kullanacağı bir yapı tanımlıyoruz
     public class CustomBaseController : ControllerBase
     {
         public IActionResult CreateActionResultInstance<T>(Response<T> response)

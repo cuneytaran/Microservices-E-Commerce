@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Catalog.Mapping
 {
-    public class GeneralMapping : Profile
+    public class GeneralMapping : Profile//automapper için Profile kullanmalısın
     {
         public GeneralMapping()
         {

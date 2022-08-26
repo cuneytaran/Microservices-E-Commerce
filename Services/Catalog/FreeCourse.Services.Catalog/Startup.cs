@@ -51,17 +51,18 @@ namespace FreeCourse.Services.Catalog
                 options.RequireHttpsMetadata = false;
             });
 
+            //interfacelerin tanýmlandýðý yer
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseService, CourseService>();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup));//Startup=Startup a baðlý tüm yerde kullanabilirsin.
             services.AddControllers(opt =>
             {
                 opt.Filters.Add(new AuthorizeFilter());
             });
 
-            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
+            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));//connection string iþlemi yapýyoruz. Settings klasörün içindeki interface den geliyor.
 
-            services.AddSingleton<IDatabaseSettings>(sp =>
+            services.AddSingleton<IDatabaseSettings>(sp =>//appsettingdeki verileri okuma iþlemi yapýyor.herhangi bir yerden IDatabaseSettings bunu çaðýrýrsam dolu þekilde baðlantý gelecek.
             {
                 return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
             });

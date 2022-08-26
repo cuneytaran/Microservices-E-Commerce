@@ -22,13 +22,14 @@ namespace FreeCourse.Services.Catalog.Services
 
         public CourseService(IMapper mapper, IDatabaseSettings databaseSettings, Mass.IPublishEndpoint publishEndpoint)
         {
-            var client = new MongoClient(databaseSettings.ConnectionString);
+            var client = new MongoClient(databaseSettings.ConnectionString);//veritabanı connectionstringi ver.
 
-            var database = client.GetDatabase(databaseSettings.DatabaseName);
+            var database = client.GetDatabase(databaseSettings.DatabaseName);//client üzerinden veritabanını ver
 
-            _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCollectionName);
+            _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCollectionName);//bu yol üzerinden mongodan Category yi dolu şekilde ver.
 
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
+
             _mapper = mapper;
 
             _publishEndpoint = publishEndpoint;
@@ -36,9 +37,9 @@ namespace FreeCourse.Services.Catalog.Services
 
         public async Task<Response<List<CourseDto>>> GetAllAsync()
         {
-            var courses = await _courseCollection.Find(course => true).ToListAsync();
+            var courses = await _courseCollection.Find(course => true).ToListAsync();//course => true=mongoda tablonun içini tamamını listele
 
-            if (courses.Any())
+            if (courses.Any())//Any=içinde bir kayıt var ise
             {
                 foreach (var course in courses)
                 {
@@ -59,7 +60,7 @@ namespace FreeCourse.Services.Catalog.Services
 
             if (course == null)
             {
-                return Response<CourseDto>.Fail("Course not found", 404);
+                return Response<CourseDto>.Fail("Course not found", 404);//CourseDto bunu boş dönüyorum ama içi boş. çünkü benden bir class istiyor o yüzden.
             }
             course.Category = await _categoryCollection.Find<Category>(x => x.Id == course.CategoryId).FirstAsync();
 
@@ -87,19 +88,21 @@ namespace FreeCourse.Services.Catalog.Services
 
         public async Task<Response<CourseDto>> CreateAsync(CourseCreateDto courseCreateDto)
         {
+            //TODO: mongodb Create
             var newCourse = _mapper.Map<Course>(courseCreateDto);
 
             newCourse.CreatedTime = DateTime.Now;
-            await _courseCollection.InsertOneAsync(newCourse);
+            await _courseCollection.InsertOneAsync(newCourse);//InsertOneAsync=mongodb ekleme işlemi
 
             return Response<CourseDto>.Success(_mapper.Map<CourseDto>(newCourse), 200);
         }
 
         public async Task<Response<NoContent>> UpdateAsync(CourseUpdateDto courseUpdateDto)
         {
+            //TODO: mongodb Update
             var updateCourse = _mapper.Map<Course>(courseUpdateDto);
 
-            var result = await _courseCollection.FindOneAndReplaceAsync(x => x.Id == courseUpdateDto.Id, updateCourse);
+            var result = await _courseCollection.FindOneAndReplaceAsync(x => x.Id == courseUpdateDto.Id, updateCourse);//FindOneAndReplaceAsync=idsi aynı olanı bul ve updateCourse içindeki bilgileri mongodb de değiştir
 
             if (result == null)
             {
@@ -113,7 +116,8 @@ namespace FreeCourse.Services.Catalog.Services
 
         public async Task<Response<NoContent>> DeleteAsync(string id)
         {
-            var result = await _courseCollection.DeleteOneAsync(x => x.Id == id);
+            //TODO: mongodb Delete
+            var result = await _courseCollection.DeleteOneAsync(x => x.Id == id);//DeleteOneAsync=mongodb de id olanı bul ve sil
 
             if (result.DeletedCount > 0)
             {
