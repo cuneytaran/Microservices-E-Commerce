@@ -14,8 +14,11 @@ namespace FreeCourse.Services.Catalog.Controllers
     [ApiController]
     public class CoursesController : CustomBaseController
     {
+        //CustomBaseController=içeriği kontrol etsin ve durum dönüştürsün
+
         private readonly ICourseService _courseService;
 
+        //ctor add services Alt+Enter
         public CoursesController(ICourseService courseService)
         {
             _courseService = courseService;
@@ -29,17 +32,18 @@ namespace FreeCourse.Services.Catalog.Controllers
             return CreateActionResultInstance(response);
         }
 
+        //{id} olmasaydı courses?id=5 demen lazımdı
         //courses/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var response = await _courseService.GetByIdAsync(id);
 
-            return CreateActionResultInstance(response);
+            return CreateActionResultInstance(response);//CustomBaseControllerden dönüş parametlerini ekleyecek. 404 alaacaksa 404 body ye gönderecek.
         }
 
         [HttpGet]
-        [Route("/api/[controller]/GetAllByUserId/{userId}")]
+        [Route("/api/[controller]/GetAllByUserId/{userId}")]//GetAllByUserId ulaşması için root yazıyoruz. yoksa buraya bulamaz.
         public async Task<IActionResult> GetAllByUserId(string userId)
         {
             var response = await _courseService.GetAllByUserIdAsync(userId);

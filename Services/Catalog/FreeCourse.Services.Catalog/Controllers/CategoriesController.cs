@@ -14,8 +14,11 @@ namespace FreeCourse.Services.Catalog.Controllers
     [ApiController]
     public class CategoriesController : CustomBaseController
     {
+        //internal sadece bulunduğu projede erişim sağlayabilir.
+        //CustomBaseController=içeriği kontrol etsin ve durum dönüştürsün
         private readonly ICategoryService _categoryService;
 
+        //ctor add services Alt+Enter
         public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
