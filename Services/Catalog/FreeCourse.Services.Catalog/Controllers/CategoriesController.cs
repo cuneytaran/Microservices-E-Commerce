@@ -14,6 +14,7 @@ namespace FreeCourse.Services.Catalog.Controllers
     [ApiController]
     public class CategoriesController : CustomBaseController
     {
+        //Önemli Not:Swagger mutlaka controllerin üstüne [HttpGet] put post istiyor. yoksa hata alırsın!!!!!
         //internal sadece bulunduğu projede erişim sağlayabilir.
         //CustomBaseController=içeriği kontrol etsin ve durum dönüştürsün
         private readonly ICategoryService _categoryService;

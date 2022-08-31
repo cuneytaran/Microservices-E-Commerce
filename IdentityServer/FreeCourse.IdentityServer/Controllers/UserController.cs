@@ -14,6 +14,16 @@ using static IdentityServer4.IdentityServerConstants;
 
 namespace FreeCourse.IdentityServer.Controllers
 {
+    //identity server4 kullanmak için cmd ekranına dotnet new -i identityserver4.templates komutu ver.
+    //IdentityServer adında dışarıda bir klasör oluştur el ile. sonra bu yolu koplaya.bu klasörün içine kuracağız. sonra projemize ekleyeceğiz.
+    //cmd ekranına dotnet new is4aspid --name projeismi ve enter yap 
+    //uyarı çıkacak veritabanını singlesinmi N yap.
+    //projenin kurulumu gerçekleşir.
+    //projende bir bir klasör oluştur (IdentityServer) mesela
+    //klasöre sağ tıkla Add - Existing Project
+    //yapmış olduğun klasörü bul seç
+    //başka yerde oluşturmuş olduğun proje bu projenin içine entegere etmiş olacaksın.
+
     [Authorize(LocalApi.PolicyName)]
     [Route("api/[controller]/[action]")]
     [ApiController]
