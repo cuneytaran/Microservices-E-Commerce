@@ -28,7 +28,7 @@ namespace FreeCourse.IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLocalApiAuthentication();
+            services.AddLocalApiAuthentication();//Authentication oluşturuyorum  [Authorize(LocalApi.PolicyName)] şeklinde yazılır controllerde
 
             services.AddControllersWithViews();
 
@@ -49,16 +49,16 @@ namespace FreeCourse.IdentityServer
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-               .AddInMemoryApiResources(Config.ApiResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryIdentityResources(Config.IdentityResources)//Configde tanımlanan IdentityResources
+                .AddInMemoryApiResources(Config.ApiResources)//Configde tanımlanan ApiResources
+                .AddInMemoryApiScopes(Config.ApiScopes)//Configde tanımlanan ApiScopes
+                .AddInMemoryClients(Config.Clients)//Configde tanımlanan Clients
                 .AddAspNetIdentity<ApplicationUser>();
 
             builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
             builder.AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>();
 
-            // not recommended for production - you need to store your key material somewhere secure
+            // not recommended for production - you need to store your key material somewhere secure 2
             builder.AddDeveloperSigningCredential();
 
             services.AddAuthentication()
@@ -86,7 +86,7 @@ namespace FreeCourse.IdentityServer
 
             app.UseRouting();
             app.UseIdentityServer();
-            app.UseAuthentication();
+            app.UseAuthentication();//Authentication ekleniyor
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

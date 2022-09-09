@@ -1,4 +1,4 @@
-using FreeCourse.Services.Catalog.Services;
+ï»¿using FreeCourse.Services.Catalog.Services;
 using FreeCourse.Services.Catalog.Settings;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,23 +46,23 @@ namespace FreeCourse.Services.Catalog
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.Authority = Configuration["IdentityServerURL"];
-                options.Audience = "resource_catalog";
-                options.RequireHttpsMetadata = false;
+                options.Authority = Configuration["IdentityServerURL"];//tokenin daÄŸÄ±ttÄ±ÄŸÄ± yer.appsetting tanÄ±mlamasÄ± yapÄ±lÄ±yor oraya bak.
+                options.Audience = "resource_catalog";//gelen tokenin iÃ§ersinde aud iÃ§inde mutalaka resource_catalog olmasÄ± gerekiyor.bu isim identity servis iÃ§indeki config iÃ§inden geliyor.
+                options.RequireHttpsMetadata = false;//https i iptal ediyoruz. 
             });
 
-            //interfacelerin tanımlandığı yer
+            //interfacelerin tanÃ½mlandÃ½Ã°Ã½ yer
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseService, CourseService>();
-            services.AddAutoMapper(typeof(Startup));//Startup=Startup a bağlı tüm yerde kullanabilirsin.
-            services.AddControllers(opt =>
+            services.AddAutoMapper(typeof(Startup));//Startup=Startup a baÃ°lÃ½ tÃ¼m yerde kullanabilirsin.
+            services.AddControllers(opt =>//tÃ¼m controllerlere otomatik Authorize etributeleri eklenmiÅŸ olacak
             {
                 opt.Filters.Add(new AuthorizeFilter());
             });
 
-            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));//connection string işlemi yapıyoruz. Settings klasörün içindeki interface den geliyor.
+            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));//connection string iÃ¾lemi yapÃ½yoruz. Settings klasÃ¶rÃ¼n iÃ§indeki interface den geliyor.
 
-            services.AddSingleton<IDatabaseSettings>(sp =>//appsettingdeki verileri okuma işlemi yapıyor.herhangi bir yerden IDatabaseSettings bunu çağırırsam dolu şekilde bağlantı gelecek.
+            services.AddSingleton<IDatabaseSettings>(sp =>//appsettingdeki verileri okuma iÃ¾lemi yapÃ½yor.herhangi bir yerden IDatabaseSettings bunu Ã§aÃ°Ã½rÃ½rsam dolu Ã¾ekilde baÃ°lantÃ½ gelecek.
             {
                 return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
             });
@@ -84,7 +84,7 @@ namespace FreeCourse.Services.Catalog
             }
 
             app.UseRouting();
-            app.UseAuthentication();
+            app.UseAuthentication();//
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

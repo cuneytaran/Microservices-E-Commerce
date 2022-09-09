@@ -24,7 +24,21 @@ namespace FreeCourse.IdentityServer.Controllers
     //yapmış olduğun klasörü bul seç
     //başka yerde oluşturmuş olduğun proje bu projenin içine entegere etmiş olacaksın.
 
-    [Authorize(LocalApi.PolicyName)]
+    //********************************
+    //https://identityserver4.readthedocs.io/en/latest/
+    //https://identityserver4.readthedocs.io/en/latest/endpoints/discovery.html
+    //Discorvery Endpoint=o anda bana sunulan tokenle sunulan endopintleri verir
+    //http://localhost:59318/.well-known/openid-configuration // ile sorgu atarsan mevcut olan tüm endpointler gelir.
+    //token almak için 4 farklı yöntemler vardır.bizim için önemli olan Resaurce Owner Credentianls ve Client Credentials Grand Type
+    //client credintiantial clientId ve clientsecret göndeririz ve bize token gönderir.
+    //istek yaparken resource owner cradentials. clientId, clientsecret/email/pasword göndeririz bir token alırız. almış olduğumuz token ile diğer sayfalara istek yapabiliyor olacağız.
+    //resource owner cradentials izin tipinde eğerki client güvenli ise kullanıyoruz. yani client veya api ikinisini biz yapıyorsak. yani bizim kontrolümüzde ise.
+    //client credentials sabit token dır. genel bir tokendir. kullanıcıya özgü değildir. 30 günlük geçerliliği vardır. 
+    //resource token kullanıcıya özgü bir token dir.
+
+    //Burada identity server hem benim için token dağıyor, aynı zamanda bir kaç tane endpointlerine token doğrulama işlemi yapıyor.
+
+    [Authorize(LocalApi.PolicyName)]// burdaki isim bir policy ismidir. 
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -46,11 +60,11 @@ namespace FreeCourse.IdentityServer.Controllers
                 City = signupDto.City
             };
 
-            var result = await _userManager.CreateAsync(user, signupDto.Password);
+            var result = await _userManager.CreateAsync(user, signupDto.Password);//user kayıt işlemi
 
             if (!result.Succeeded)
             {
-                return BadRequest(Response<NoContent>.Fail(result.Errors.Select(x => x.Description).ToList(), 400));
+                return BadRequest(Response<NoContent>.Fail(result.Errors.Select(x => x.Description).ToList(), 400));//NoContent=içeriği boş
             }
 
             return NoContent();
