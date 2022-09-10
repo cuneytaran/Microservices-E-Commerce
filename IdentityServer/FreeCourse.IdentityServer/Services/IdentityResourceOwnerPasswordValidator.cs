@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.IdentityServer.Services
 {
-    public class IdentityResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
+    public class IdentityResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator//kullanıcı adı ve şifre girildiğinde bize token verecek sistem
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -24,7 +24,7 @@ namespace FreeCourse.IdentityServer.Services
 
             if (existUser == null)
             {
-                var errors = new Dictionary<string, object>();
+                var errors = new Dictionary<string, object>();// error da dizi veya property dönebilir o yüzden obje alıyor
                 errors.Add("errors", new List<string> { "Email veya şifreniz yanlış" });
                 context.Result.CustomResponse = errors;
 

@@ -24,11 +24,11 @@ namespace FreeCourse.IdentityServer
 
         public static IEnumerable<IdentityResource> IdentityResources =>
                    new IdentityResource[]
-                   {
-                       new IdentityResources.Email(),
-                       new IdentityResources.OpenId(),
-                       new IdentityResources.Profile(),
-                       new IdentityResource(){ Name="roles", DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new []{ "role"} }
+                   {//identiy ile gönderilecek bilgiler
+                       new IdentityResources.Email(),//kullanıcının email erişimi için bilgi
+                       new IdentityResources.OpenId(),//openid mutlaka dolu olmak zorundadır.yoksa çalışmaz. email boş olabilir ancak openid mutlaka dolu olmalıdır.
+                       new IdentityResources.Profile(),//profil ile ilgili bilgiler ilişkilendirilsin.
+                       new IdentityResource(){ Name="roles", DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new []{ "role"} }//gönderilirken kullanıcının name,role gönderilecek bilgiler.
                    };
 
         public static IEnumerable<ApiScope> ApiScopes =>
