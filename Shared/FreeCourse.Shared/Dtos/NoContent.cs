@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FreeCourse.Shared.Dtos
 {
-    public class NoContent
+    public class NoContent//return yaparken, eğerki birşey dönmek istemiyorsam bunumu kullanacağız.
     {
     }
 }

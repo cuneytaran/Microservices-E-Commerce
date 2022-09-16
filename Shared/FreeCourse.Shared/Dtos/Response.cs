@@ -14,21 +14,24 @@ namespace FreeCourse.Shared.Dtos
         public int StatusCode { get; set; }
 
         [JsonIgnore]
-        public bool IsSuccessful { get; set; }
+        public bool IsSuccessful { get; set; }//başarılımı, başarılı değilmi belirleyeceğiz.
 
-        public List<string> Errors { get; set; }
+        public List<string> Errors { get; set; }// hata da dönüş bilgileri
 
-        // Static Factory Method
+        // ********return yaparken successde içinde gönderilecek verier belirleniyor*********
+        //return yaparken  dönüşte data ve satus kodu dönecekse
         public static Response<T> Success(T data, int statusCode) // data ve statusCode geliyorsa...
         {
             return new Response<T> { Data = data, StatusCode = statusCode, IsSuccessful = true }; // dönüşü böyle olacak.
         }
 
+        //return yaparken  dönüşte sadece satus kodu dönecekse
         public static Response<T> Success(int statusCode)// sadece statusCode geliyorsa...
         {
             return new Response<T> { Data = default(T), StatusCode = statusCode, IsSuccessful = true };
         }
 
+        //return da hata alındıysa dönecek liste hata veriler ve status codu
         public static Response<T> Fail(List<string> errors, int statusCode) // başarısız durumu var ise list şeklinde dönüş yapacak.
 
         {
@@ -40,6 +43,7 @@ namespace FreeCourse.Shared.Dtos
             };
         }
 
+        //return da hata alındıysa dönecek tek hata geliyorsa ve status codu
         public static Response<T> Fail(string error, int statusCode) // başarısız liste değilse
         {
             return new Response<T> { Errors = new List<string>() { error }, StatusCode = statusCode, IsSuccessful = false };

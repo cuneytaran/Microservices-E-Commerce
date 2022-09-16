@@ -1,9 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Catalog.Models
 {
@@ -26,12 +23,12 @@ namespace FreeCourse.Services.Catalog.Models
         [BsonRepresentation(BsonType.DateTime)]// Tarih şeklinde veri tutulacak
         public DateTime CreatedTime { get; set; }
 
-        public Feature Feature { get; set; } // bire bir ilişki tutmak için kullanmak için. bire bir ilişki örneği
+        public Feature Feature { get; set; } //***** Feature Modeline bağlıyoruz.***** bire bir ilişki tutmak için kullanmak için. bire bir ilişki örneği. 
 
         [BsonRepresentation(BsonType.ObjectId)] //tipini ObjectId şeklinde tutması
         public string CategoryId { get; set; }
 
-        [BsonIgnore]//mongodb oluştururken bunu gözardı et. yani mongo içinde bir tablo oluşturma
-        public Category Category { get; set; } // productları dönerken Category leride dönmek için kullanılyorsun.
+        [BsonIgnore]//mongodb oluştururken bunu gözardı et. yani mongo içinde bir satır oluşturma
+        public Category Category { get; set; } // productları dönerken Category leride getirmesi için kullanılyorsun.
     }
 }

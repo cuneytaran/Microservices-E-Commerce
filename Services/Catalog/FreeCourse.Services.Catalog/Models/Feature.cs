@@ -7,6 +7,6 @@ namespace FreeCourse.Services.Catalog.Models
 {
     public class Feature
     {
-        public int Duration { get; set; }
+        public int Duration { get; set; }//kursun süresi
     }
 }
