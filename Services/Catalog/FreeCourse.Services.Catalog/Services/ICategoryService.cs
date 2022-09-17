@@ -17,5 +17,5 @@ namespace FreeCourse.Services.Catalog.Services
         Task<Response<CategoryDto>> GetByIdAsync(string id);
     }
 
-    //startupda interfaceleri eklemeyi unutma
+    //****startupda interfaceleri eklemeyi unutma
 }

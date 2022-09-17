@@ -12,5 +12,5 @@ namespace FreeCourse.Services.Catalog.Settings
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
-    //DatabaseSettings classında implement ediyoruz. Çünkü
+    //DatabaseSettings classında implement ediyoruz.
 }

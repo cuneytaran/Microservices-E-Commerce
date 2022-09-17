@@ -30,16 +30,17 @@ namespace FreeCourse.Services.Catalog.Controllers
         {
             var categories = await _categoryService.GetAllAsync();
 
-            return CreateActionResultInstance(categories);
+            return CreateActionResultInstance(categories);//CustomBaseControllerden dönüş parametlerini ekleyecek. 404 alaacaksa 404 body ye gönderecek.
         }
 
+        //{id} olmasaydı courses?id=5 demen lazımdı
         //categories/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var category = await _categoryService.GetByIdAsync(id);
 
-            return CreateActionResultInstance(category);
+            return CreateActionResultInstance(category);//CustomBaseControllerden dönüş parametlerini ekleyecek. 404 alaacaksa 404 body ye gönderecek.
         }
 
         [HttpPost]

@@ -41,20 +41,20 @@ namespace FreeCourse.IdentityServer
             try
             {
                 var host = CreateHostBuilder(args).Build();
-
+                //otomatik migration işlemi yapmak için yapıyoruz.
                 using (var scope = host.Services.CreateScope())
                 {
                     var serviceProvider = scope.ServiceProvider;
 
-                    var applicationDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+                    var applicationDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();//GetRequiredService=bu servisi bulumazsa exeption fırlatır.
 
-                    applicationDbContext.Database.Migrate();
+                    applicationDbContext.Database.Migrate();//ApplicationDbContext de bir migration yoksa oluşturacak. uygulanmamış migration varsa onu uygulayacak.
 
-                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-                    if (!userManager.Users.Any())
+                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();//veritabanında bir kullanıcı yoksa kullanıcıda oluşturacak.
+                    //bir user tanımlıyoruz.
+                    if (!userManager.Users.Any())//herhangi bir kullanıcı yok ise bir kullanıcı oluştur.
                     {
-                        userManager.CreateAsync(new ApplicationUser { UserName = "fcakiroglu16", Email = "f-cakiroglu@outlook.com", City = "Ankara" }, "Password12*").Wait();
+                        userManager.CreateAsync(new ApplicationUser { UserName = "fcakiroglu16", Email = "f-cakiroglu@outlook.com", City = "Ankara" }, "Password12*").Wait();//Wait() kullanma sebebimiz.yapı asenkron bir yapıydı bunu senkrona çevirmek için.
                     }
                 }
 

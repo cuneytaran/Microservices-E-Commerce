@@ -13,7 +13,9 @@ namespace FreeCourse.Services.Catalog.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CoursesController : CustomBaseController
-    {
+    {        
+        //Önemli Not:Swagger mutlaka controllerin üstüne [HttpGet] put post istiyor. yoksa hata alırsın!!!!!
+        //internal sadece bulunduğu projede erişim sağlayabilir.
         //CustomBaseController=içeriği kontrol etsin ve durum dönüştürsün
 
         private readonly ICourseService _courseService;

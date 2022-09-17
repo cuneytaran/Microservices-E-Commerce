@@ -13,13 +13,13 @@ namespace FreeCourse.Services.Catalog.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IMongoCollection<Category> _categoryCollection;
+        private readonly IMongoCollection<Category> _categoryCollection;//mongo db ye bağlantı connectionstring yani
 
         private readonly IMapper _mapper;
 
         public CategoryService(IMapper mapper, IDatabaseSettings databaseSettings)
         {
-            var client = new MongoClient(databaseSettings.ConnectionString);//veritabanı connectionstringi ver.
+            var client = new MongoClient(databaseSettings.ConnectionString);//veritabanı connectionstringi ver. cliente bağlandık
 
             var database = client.GetDatabase(databaseSettings.DatabaseName);//client üzerinden veritabanını ver
 
@@ -30,7 +30,7 @@ namespace FreeCourse.Services.Catalog.Services
 
         public async Task<Response<List<CategoryDto>>> GetAllAsync()
         {
-            var categories = await _categoryCollection.Find(category => true).ToListAsync();
+            var categories = await _categoryCollection.Find(category => true).ToListAsync();//mongodb de category => true tüm categoryleri bana ver
 
             return Response<List<CategoryDto>>.Success(_mapper.Map<List<CategoryDto>>(categories), 200);
         }

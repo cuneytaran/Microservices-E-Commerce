@@ -12,5 +12,5 @@ namespace FreeCourse.Services.Catalog.Settings
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
-    //startup kısmına git ve connectionu tanımlamasını yap.
+    //startup kısmına git ve connectionu DatabaseSettings tanımlamasını yap.
 }
