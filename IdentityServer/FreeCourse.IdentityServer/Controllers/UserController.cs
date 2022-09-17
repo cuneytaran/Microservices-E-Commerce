@@ -14,6 +14,7 @@ using static IdentityServer4.IdentityServerConstants;
 
 namespace FreeCourse.IdentityServer.Controllers
 {
+    //TODO: İdentity kurulumu
     //identity server4 kullanmak için cmd ekranına dotnet new -i identityserver4.templates komutu ver.
     //IdentityServer adında dışarıda bir klasör oluştur el ile. sonra bu yolu koplaya.bu klasörün içine kuracağız. sonra projemize ekleyeceğiz.
     //cmd ekranına dotnet new is4aspid --name projeismi ve enter yap 
@@ -40,7 +41,9 @@ namespace FreeCourse.IdentityServer.Controllers
     //returnda Response olarak dönmek için Response sharedin içinde olduğu uçin referans olarak shared e eklemen gerekiyor.
 
     //** User işlemleri bittikten sonra Config.cs dosyasına git. orada. hangi identity serverden kimden token alacak, hangi microservislere istek yapılacağını belirleyecek.
-    [Authorize(LocalApi.PolicyName)]// burdaki isim bir policy ismidir. 
+
+
+    [Authorize(LocalApi.PolicyName)]// PolicyName=IdentityServerAccessToken yani token alması gerekiyor.Bu aslında bir policy ismidir.Yani token içinde IdentityServerApi yazısını bekilyor. içinde bu olmalı yoksa devam ettirmez.
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase

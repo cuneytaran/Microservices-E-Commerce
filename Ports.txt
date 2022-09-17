@@ -125,3 +125,43 @@ Discorey endpoint kullanıldı
 
   ***User kayıt olması işlemi
   Identity server klasörün içinde controller içindeki User içinde buluyor
+
+  *** client token almak için yapılması gerekenler POSTMAN ile ***
+  Nasıl yapılacağını gösteren dokümantasyon : https://identityserver4.readthedocs.io/en/latest/endpoints/token.html
+  Post : http://localhost:5001/connect/token
+  Body: x-www seç
+  client_id : WebMvcClient
+  client_secret : secret
+  grant_type : client_credentials
+
+  gelen tokeni encoding yapınca gelen bilgiler
+  {
+  "nbf": 1663420017,
+  "exp": 1663423617,                   ********* 1 saatlik ömrü var.
+  "iss": "http://localhost:5001",
+  "aud": [                   ********* bunlar istek yapabilir
+    "resource_catalog",
+    "resource_gateway",
+    "resource_photo_stock",
+    "http://localhost:5001/resources"
+  ],
+  "client_id": "WebMvcClient",
+  "jti": "2EF75486C35D648196AA543FA6635C5F",
+  "iat": 1663420017,
+  "scope": [
+    "catalog_fullpermission",
+    "gateway_fullpermission",
+    "IdentityServerApi",                   *********identityserver bu scobu bekliyoruz demek
+    "photo_stock_fullpermission"
+  ]
+}
+
+**Token devreye sokma
+
+token devreye sokmak için nuget ten  Microsoft.AspNetCore.Authentication.JwtBearer yükle
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.Authority = Configuration["IdentityServerURL"];//tokenin dağıttığı yer.appsetting tanımlaması yapılıyor oraya bak.
+                options.Audience = "resource_catalog";//gelen tokenin içersinde aud içinde mutalaka resource_catalog olması gerekiyor.bu isim identity servis içindeki config içinden geliyor.
+                options.RequireHttpsMetadata = false;//https i iptal ediyoruz. 
+            });

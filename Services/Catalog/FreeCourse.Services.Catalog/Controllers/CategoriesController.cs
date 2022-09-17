@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Catalog.Controllers
 {
+    //TODO:Authorize tek bir sefer çalıştırma. startupa git
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : CustomBaseController

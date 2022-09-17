@@ -43,7 +43,7 @@ namespace FreeCourse.Services.Catalog
                     });
                 });
             });
-
+            //TODO:TOKEN devreye sokma
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Authority = Configuration["IdentityServerURL"];//tokenin dağıttığı yer.appsetting tanımlaması yapılıyor oraya bak.
@@ -55,7 +55,8 @@ namespace FreeCourse.Services.Catalog
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddAutoMapper(typeof(Startup));//Startup=Startup a bağlı tüm yerde kullanabilirsin.
-            services.AddControllers(opt =>//tüm controllerlere otomatik Authorize etributeleri eklenmiş olacak
+            services.AddControllers(opt =>//TODO:Authorize tek bir sefer çalıştırma2. 
+            //tüm controllerlere otomatik Authorize etributeleri eklenmiş olacak
             {
                 opt.Filters.Add(new AuthorizeFilter());
             });
@@ -84,7 +85,7 @@ namespace FreeCourse.Services.Catalog
             }
 
             app.UseRouting();
-            app.UseAuthentication();//
+            app.UseAuthentication();//Koruma altına alıyoruz. Token li...
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
