@@ -75,10 +75,11 @@ namespace FreeCourse.IdentityServer.Controllers
             return NoContent();//geriye birşey dönmek istemiyoruz.
         }
 
+        //login olduktan sonra user bilgilerini getirme işlemi
         [HttpGet]
         public async Task<IActionResult> GetUser()
         {
-            var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+            var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);//Sub=token içindeki userid 
 
             if (userIdClaim == null) return BadRequest();
 

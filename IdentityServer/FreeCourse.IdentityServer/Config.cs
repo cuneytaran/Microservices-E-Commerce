@@ -25,9 +25,9 @@ namespace FreeCourse.IdentityServer
 
         public static IEnumerable<IdentityResource> IdentityResources =>//get propertis
                    new IdentityResource[]
-                   {//identiy ile gönderilecek bilgiler
+                   {//identiy ile gönderilecek bilgiler.yani login olduktan sonra dönüş yapılacak bilgiler.
                        new IdentityResources.Email(),//kullanıcının email erişimi için bilgi
-                       new IdentityResources.OpenId(),//openid mutlaka dolu olmak zorundadır.yoksa çalışmaz. email boş olabilir ancak openid mutlaka dolu olmalıdır.
+                       new IdentityResources.OpenId(),//id mutlaka dolu olmak zorundadır.yoksa çalışmaz. email boş olabilir ancak openid mutlaka dolu olmalıdır.
                        new IdentityResources.Profile(),//profil ile ilgili bilgiler ilişkilendirilsin.
                        new IdentityResource(){ Name="roles", DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new []{ "role"} }//gönderilirken kullanıcının name,role gönderilecek bilgiler.
                    };
@@ -50,6 +50,9 @@ namespace FreeCourse.IdentityServer
             {
                 //*****ClientCredentials da refresh token olmaz!!!!!!!!!!
                 //Bu bilgiler memory de olacak
+
+
+                //***Client identiyserver yapılandırılması
                 new Client
                 {
                    ClientName="Asp.Net Core MVC",//kim istiyor adı belli olsun.
@@ -58,19 +61,22 @@ namespace FreeCourse.IdentityServer
                    AllowedGrantTypes= GrantTypes.ClientCredentials,//akış tipi ClientCredentials olarak belirlendi.ClientCredentials larda refresh token olmaz!!!
                    AllowedScopes={ "catalog_fullpermission","photo_stock_fullpermission", "gateway_fullpermission", IdentityServerConstants.LocalApi.ScopeName }//kimlere izin verilecek.yeni kimlere token verilecek.
                 },
+                //***Resource identityserver yapılandırılması
                    new Client
                 {
                    ClientName="Asp.Net Core MVC",
                    ClientId="WebMvcClientForUser",
-                   AllowOfflineAccess=true,
+                   AllowOfflineAccess=true,//refresh token izin veriyoruz
                    ClientSecrets= {new Secret("secret".Sha256())},
-                   AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
-                   AllowedScopes={ "basket_fullpermission", "order_fullpermission", "gateway_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles" },
-                   AccessTokenLifetime=1*60*60,
-                   RefreshTokenExpiration=TokenExpiration.Absolute,
-                   AbsoluteRefreshTokenLifetime= (int) (DateTime.Now.AddDays(60)- DateTime.Now).TotalSeconds,
-                   RefreshTokenUsage= TokenUsage.ReUse
-                },
+                   AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,//refresh token oluşturabiliriyoruz
+                   AllowedScopes={ "basket_fullpermission", "order_fullpermission", "gateway_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles" },//token aldığında token ile birlikte bilgilerini eşibileceiği tüm bilgiler burada bulunuyor.
+                   //yukarıda IdentityServerConstants.StandardScopes.OfflineAccess= refresh token oluşturma için kullanıyor. Yani bununla refresh token oluşturuluyor.
+                   AccessTokenLifetime=1*60*60,// accessToken ömrünü saat bazında belirliyoruz.
+                   RefreshTokenExpiration=TokenExpiration.Absolute,//eğer Absolute yerine Sliding seçerseniz refresh token bittikçe kendisi yeni refresh token üretir.
+                   AbsoluteRefreshTokenLifetime= (int) (DateTime.Now.AddDays(60)- DateTime.Now).TotalSeconds,// refresh ömrünü 60 gün sonra bitecek. 
+                   RefreshTokenUsage= TokenUsage.ReUse//refresh token ReUse yerine OneTimeOnly yaparsan bir kere kullanılır.
+                //*******Kullanıcı siteye bir kere login olduğunda refresh token yenilenir. ve yukarıdaki kuralların hepsi yeniden başlar.
+                   },
                       new Client
                 {
                     ClientName="Token Exchange Client",

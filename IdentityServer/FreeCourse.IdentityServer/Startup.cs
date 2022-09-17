@@ -55,7 +55,7 @@ namespace FreeCourse.IdentityServer
                 .AddInMemoryClients(Config.Clients)//Configde tanımlanan Clients
                 .AddAspNetIdentity<ApplicationUser>();
 
-            builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
+            builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();//namespace FreeCourse.IdentityServer.Services den IdentityResourceOwnerPasswordValidator den user login işlemi ve token dönüşü tanımlaması
             builder.AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>();
 
             // not recommended for production - you need to store your key material somewhere secure 2

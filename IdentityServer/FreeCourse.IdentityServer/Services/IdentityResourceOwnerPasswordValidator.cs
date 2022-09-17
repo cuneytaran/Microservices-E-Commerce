@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.IdentityServer.Services
 {
-    public class IdentityResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator//kullanıcı adı ve şifre girildiğinde bize token verecek sistem
+    public class IdentityResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator//IResourceOwnerPasswordValidator=kullanıcı adı ve şifre girildiğinde bize token verecek sistem
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -20,11 +20,11 @@ namespace FreeCourse.IdentityServer.Services
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
-            var existUser = await _userManager.FindByEmailAsync(context.UserName);
+            var existUser = await _userManager.FindByEmailAsync(context.UserName);//userName içinde email göndereceğiz
 
             if (existUser == null)
             {
-                var errors = new Dictionary<string, object>();// error da dizi veya property dönebilir o yüzden obje alıyor
+                var errors = new Dictionary<string, object>();// error da dizi veya property dönebilir o yüzden obje alıyor.Dictionary=string ve obje alır.
                 errors.Add("errors", new List<string> { "Email veya şifreniz yanlış" });
                 context.Result.CustomResponse = errors;
 
@@ -44,4 +44,5 @@ namespace FreeCourse.IdentityServer.Services
             context.Result = new GrantValidationResult(existUser.Id.ToString(), OidcConstants.AuthenticationMethods.Password);
         }
     }
-}
+}//işlemler yapılınca startupda tanımlama yapmayı unutma.
+//kullanıcı login olduktan sonra nelere eşiceğini config.cs dosyasında belirleniyor. oraya git.
