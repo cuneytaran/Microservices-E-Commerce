@@ -1,19 +1,19 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-using IdentityServer4;
+﻿using IdentityServer4;
 using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
+using static IdentityServer4.Events.TokenIssuedSuccessEvent;
 
 namespace FreeCourse.IdentityServer
 {
+    //Burası hangi identity serverden kimden token alacak, hangi microservislere istek yapılacağını belirleyecek
+    //Reasurce identity de JWT token içinde = catolog için mesela mutlaka Aud:Reasurce_catalogda olması lazımm ve Scope:coursecatalog_fullpermission olması gerekiyor.istek yapıldığında JWT içinde bu bahsettiklerimi barındırır.diğerleride barındırır ama bunların iki özelliği olması gerekiyor.
     public static class Config
     {
         public static IEnumerable<ApiResource> ApiResources => new ApiResource[]//Aud lara karşılık geliyor
         {
-            new ApiResource("resource_catalog"){Scopes={"catalog_fullpermission"}},//catalog için full erişim
-            new ApiResource("resource_photo_stock"){Scopes={"photo_stock_fullpermission"}},//photo için full erişim
+            new ApiResource("resource_catalog"){Scopes={"catalog_fullpermission"}},//catalog için full erişim.catalog_fullpermission=ApiScopes den bilgi alıyor.istek yapması gerekli
+            new ApiResource("resource_photo_stock"){Scopes={"photo_stock_fullpermission"}},//photo için full erişim.ApiScopes den bilgi alıyor.istek yapması gerekli
             new ApiResource("resource_basket"){Scopes={"basket_fullpermission"}},
             new ApiResource("resource_discount"){Scopes={"discount_fullpermission"}},
             new ApiResource("resource_order"){Scopes={"order_fullpermission"}},
@@ -21,8 +21,9 @@ namespace FreeCourse.IdentityServer
             new ApiResource("resource_gateway"){Scopes={"gateway_fullpermission"}},
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)//identity serverin kendine istek yapması için
         };
+        //ApiResources i tanımlamalar yapıldıktan sonra, Startup a eklemeyi unutma.
 
-        public static IEnumerable<IdentityResource> IdentityResources =>
+        public static IEnumerable<IdentityResource> IdentityResources =>//get propertis
                    new IdentityResource[]
                    {//identiy ile gönderilecek bilgiler
                        new IdentityResources.Email(),//kullanıcının email erişimi için bilgi
@@ -34,29 +35,28 @@ namespace FreeCourse.IdentityServer
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]//
             {
-                new ApiScope("catalog_fullpermission","Catalog API için full erişim"),//catalog için full erişim
-
+                new ApiScope("catalog_fullpermission","Catalog API için full erişim"),//catalog için full erişim için
                 new ApiScope("photo_stock_fullpermission","Photo Stock API için full erişim"),//photo için full erişim
-
-                     new ApiScope("basket_fullpermission","Basket API için full erişim"),
-                     new ApiScope("discount_fullpermission","Discount API için full erişim"),
-                     new ApiScope("order_fullpermission","Order API için full erişim"),
-                     new ApiScope("payment_fullpermission","Payment API için full erişim"),
-                     new ApiScope("gateway_fullpermission","Gateway API için full erişim"),
+                new ApiScope("basket_fullpermission","Basket API için full erişim"),
+                new ApiScope("discount_fullpermission","Discount API için full erişim"),
+                new ApiScope("order_fullpermission","Order API için full erişim"),
+                new ApiScope("payment_fullpermission","Payment API için full erişim"),
+                new ApiScope("gateway_fullpermission","Gateway API için full erişim"),
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName)//localapiden scopename bilgisini alıyor.identity serverin kendine istek yapması için
             };
 
         public static IEnumerable<Client> Clients =>//buradki Client identity servere göre ASP.NET CORE API dir.
-            new Client[]
+            new Client[]//Client dediğimiz yer full Asp.Net MVC projesi. bu identityden farklı yerde o yüzden.birbirinden izole olduğu için MVC bir client dir.
             {
+                //*****ClientCredentials da refresh token olmaz!!!!!!!!!!
                 //Bu bilgiler memory de olacak
                 new Client
                 {
                    ClientName="Asp.Net Core MVC",//kim istiyor adı belli olsun.
                    ClientId="WebMvcClient",
-                   ClientSecrets= {new Secret("secret".Sha256())},//şifrem secret olsun ama bunu şifrelemek lazım Sha256 şifreleme ile
+                   ClientSecrets= {new Secret("secret".Sha256())},//şifre= secret olarak tanımladık.ama bunu şifrelemek lazım Sha256 şifreleme ile
                    AllowedGrantTypes= GrantTypes.ClientCredentials,//akış tipi ClientCredentials olarak belirlendi.ClientCredentials larda refresh token olmaz!!!
-                   AllowedScopes={ "catalog_fullpermission","photo_stock_fullpermission", "gateway_fullpermission", IdentityServerConstants.LocalApi.ScopeName }//kimlere izin verilecek
+                   AllowedScopes={ "catalog_fullpermission","photo_stock_fullpermission", "gateway_fullpermission", IdentityServerConstants.LocalApi.ScopeName }//kimlere izin verilecek.yeni kimlere token verilecek.
                 },
                    new Client
                 {

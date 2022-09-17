@@ -50,7 +50,7 @@ namespace FreeCourse.IdentityServer
                 options.EmitStaticAudienceClaim = true;
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)//Configde tanımlanan IdentityResources
-                .AddInMemoryApiResources(Config.ApiResources)//Configde tanımlanan ApiResources
+                .AddInMemoryApiResources(Config.ApiResources)//namespace FreeCourse.IdentityServer Configde tanımlanan ApiResources
                 .AddInMemoryApiScopes(Config.ApiScopes)//Configde tanımlanan ApiScopes
                 .AddInMemoryClients(Config.Clients)//Configde tanımlanan Clients
                 .AddAspNetIdentity<ApplicationUser>();

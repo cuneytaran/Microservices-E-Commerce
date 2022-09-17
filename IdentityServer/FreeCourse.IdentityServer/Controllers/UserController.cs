@@ -30,14 +30,16 @@ namespace FreeCourse.IdentityServer.Controllers
     //Discorvery Endpoint=o anda bana sunulan tokenle sunulan endopintleri verir
     //http://localhost:59318/.well-known/openid-configuration // ile sorgu atarsan mevcut olan tüm endpointler gelir.
     //token almak için 4 farklı yöntemler vardır.bizim için önemli olan Resaurce Owner Credentianls ve Client Credentials Grand Type
-    //client credintiantial clientId ve clientsecret göndeririz ve bize token gönderir.
-    //istek yaparken resource owner cradentials. clientId, clientsecret/email/pasword göndeririz bir token alırız. almış olduğumuz token ile diğer sayfalara istek yapabiliyor olacağız.
+    //client credintiantial clientId ve clientsecret göndeririz ve bize token gönderir.burdaki client Asp.Net MVC tüm proje gibi düşün.Çünkü Asp.Net MVC ile identity farklı projeler izole projeler gibi düşün. 
+    //istek yaparken resource owner cradentials. clientId, clientsecret/email/pasword göndeririz bir token alırız. almış olduğumuz token ile diğer sayfalara istek yapabiliyor olacağız.user ile ilgili sayfalarda kullanacağız.
     //resource owner cradentials izin tipinde eğerki client güvenli ise kullanıyoruz. yani client veya api ikinisini biz yapıyorsak. yani bizim kontrolümüzde ise.
     //client credentials sabit token dır. genel bir tokendir. kullanıcıya özgü değildir. 30 günlük geçerliliği vardır. 
     //resource token kullanıcıya özgü bir token dir.
 
     //Burada identity server hem benim için token dağıyor, aynı zamanda bir kaç tane endpointlerine token doğrulama işlemi yapıyor.
+    //returnda Response olarak dönmek için Response sharedin içinde olduğu uçin referans olarak shared e eklemen gerekiyor.
 
+    //** User işlemleri bittikten sonra Config.cs dosyasına git. orada. hangi identity serverden kimden token alacak, hangi microservislere istek yapılacağını belirleyecek.
     [Authorize(LocalApi.PolicyName)]// burdaki isim bir policy ismidir. 
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -53,7 +55,7 @@ namespace FreeCourse.IdentityServer.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(SignupDto signupDto)
         {
-            var user = new ApplicationUser
+            var user = new ApplicationUser//User bilgileri ekleniyor
             {
                 UserName = signupDto.UserName,
                 Email = signupDto.Email,
@@ -67,7 +69,7 @@ namespace FreeCourse.IdentityServer.Controllers
                 return BadRequest(Response<NoContent>.Fail(result.Errors.Select(x => x.Description).ToList(), 400));//NoContent=içeriği boş
             }
 
-            return NoContent();
+            return NoContent();//geriye birşey dönmek istemiyoruz.
         }
 
         [HttpGet]
