@@ -18,10 +18,10 @@ namespace FreeCourse.Services.Basket.Controllers
     
     [Route("api/[controller]")]
     [ApiController]
-    public class BasketsController : CustomBaseController
+    public class BasketsController : CustomBaseController//CustomBaseController impement ettik
     {
-        private readonly IBasketService _basketService;
-        private readonly ISharedIdentityService _sharedIdentityService;
+        private readonly IBasketService _basketService;//sepete ekleme,güncelleme,silme,veri alma işlemi
+        private readonly ISharedIdentityService _sharedIdentityService;//userid yi token içinden çekmek için kullanacağız.
 
         public BasketsController(IBasketService basketService, ISharedIdentityService sharedIdentityService)
         {
@@ -32,6 +32,7 @@ namespace FreeCourse.Services.Basket.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBasket()
         {
+            //var claims = User.Claims;//token içinden userin hangi bilgileri geliyor. bunları gösteriyor.
             return CreateActionResultInstance(await _basketService.GetBasket(_sharedIdentityService.GetUserId));
         }
 

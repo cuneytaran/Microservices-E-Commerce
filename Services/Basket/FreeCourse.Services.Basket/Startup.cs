@@ -33,12 +33,14 @@ namespace FreeCourse.Services.Basket
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+            //nuget paketten Microsoft.Aspnetcore.authentication.jwtbearer kur
+            //servisi güvence altına alma işlemi Authentication işlemi
+            var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();//Authenticat olmuş bir user olması lazım işlemi
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");//Claim lere gelen her datayı maplıyorsun ancak sub keyini maplama diyorum ki. artık bana bana token içinde ayıklarken sub olarak gösterecek veri sub olarak userid si gelcek.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Authority = Configuration["IdentityServerURL"];
-                options.Audience = "resource_basket";
+                options.Audience = "resource_basket";//identityserver config dosyasında tanımlama yaptık.
                 options.RequireHttpsMetadata = false;
             });
 
@@ -58,11 +60,13 @@ namespace FreeCourse.Services.Basket
 
                 return redis;
             });
-
+            
+            //contorllerde otomatik Authentication işlemi yapması bu biraz farklı diğer startuplara bak....
             services.AddControllers(opt =>
             {
                 opt.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
             });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreeCourse.Services.Basket", Version = "v1" });
@@ -80,6 +84,7 @@ namespace FreeCourse.Services.Basket
             }
 
             app.UseRouting();
+            //Authentication ekleme işlemi
             app.UseAuthentication();
             app.UseAuthorization();
 

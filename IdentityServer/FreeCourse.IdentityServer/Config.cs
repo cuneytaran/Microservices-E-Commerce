@@ -14,7 +14,7 @@ namespace FreeCourse.IdentityServer
         {
             new ApiResource("resource_catalog"){Scopes={"catalog_fullpermission"}},//catalog için full erişim.catalog_fullpermission=ApiScopes den bilgi alıyor.istek yapması gerekli
             new ApiResource("resource_photo_stock"){Scopes={"photo_stock_fullpermission"}},//photo için full erişim.ApiScopes den bilgi alıyor.istek yapması gerekli
-            new ApiResource("resource_basket"){Scopes={"basket_fullpermission"}},
+            new ApiResource("resource_basket"){Scopes={"basket_fullpermission"}},//basket servisi için full erişim.resource_basket basket servisin startupunda işledik.
             new ApiResource("resource_discount"){Scopes={"discount_fullpermission"}},
             new ApiResource("resource_order"){Scopes={"order_fullpermission"}},
             new ApiResource("resource_payment"){Scopes={"payment_fullpermission"}},
@@ -62,7 +62,7 @@ namespace FreeCourse.IdentityServer
                    AllowedScopes={ "catalog_fullpermission","photo_stock_fullpermission", "gateway_fullpermission", IdentityServerConstants.LocalApi.ScopeName }//kimlere izin verilecek.yeni kimlere token verilecek.
                 },
                 //***Resource identityserver yapılandırılması
-                   new Client
+                   new Client //bu client kullanıcı ile ilgili dataları alıyor.AllowedGrantTypes=hangi servislere izin vereceğini belirliyor ve onlara client bilgisi gönderebiliyor.
                 {
                    ClientName="Asp.Net Core MVC",
                    ClientId="WebMvcClientForUser",

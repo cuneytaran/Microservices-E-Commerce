@@ -47,5 +47,6 @@ namespace FreeCourse.Services.Basket.Services
             var status = await _redisService.GetDb().KeyDeleteAsync(userId);
             return status ? Response<bool>.Success(204) : Response<bool>.Fail("Basket not found", 404);
         }
+        //startupda İnterface eklemeyi unutma!!!
     }
 }
