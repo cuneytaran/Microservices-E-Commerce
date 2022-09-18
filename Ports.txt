@@ -166,3 +166,14 @@ token devreye sokmak için nuget ten  Microsoft.AspNetCore.Authentication.JwtBea
                 options.Audience = "resource_catalog";//gelen tokenin içersinde aud içinde mutalaka resource_catalog olması gerekiyor.bu isim identity servis içindeki config içinden geliyor.
                 options.RequireHttpsMetadata = false;//https i iptal ediyoruz. 
             });
+
+
+*** REDİS ****
+StackExchange.Redis kütüphanesi kullanılır.
+
+appsetting.json için tanımlama yap
+{
+  "RedisSettings": {
+    "Host": "localhost",
+    "Port": 6379
+  },

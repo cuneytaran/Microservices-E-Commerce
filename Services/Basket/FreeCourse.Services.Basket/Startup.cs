@@ -1,4 +1,4 @@
-using FreeCourse.Services.Basket.Services;
+﻿using FreeCourse.Services.Basket.Services;
 using FreeCourse.Services.Basket.Settings;
 using FreeCourse.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,7 +30,7 @@ namespace FreeCourse.Services.Basket
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
             var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -45,15 +45,16 @@ namespace FreeCourse.Services.Basket
             services.AddHttpContextAccessor();
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
             services.AddScoped<IBasketService, BasketService>();
-            services.Configure<RedisSettings>(Configuration.GetSection("RedisSettings"));
-
+            //TODO:Redis ayarı 2            
+            services.Configure<RedisSettings>(Configuration.GetSection("RedisSettings"));//appsettings.json içindeki RedisSettings bilgilerini oku
+            //TODO:Redis ayarı 5
             services.AddSingleton<RedisService>(sp =>
             {
-                var redisSettings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;
+                var redisSettings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;//appsetting içindeki verileri RedisSettings clasörüne aktaracak ve data gelecek.
 
-                var redis = new RedisService(redisSettings.Host, redisSettings.Port);
+                var redis = new RedisService(redisSettings.Host, redisSettings.Port);//redisin ihtiyacı olan host ve port adresi
 
-                redis.Connect();
+                redis.Connect();//dockera bağlantı kuruluyor.
 
                 return redis;
             });
@@ -68,7 +69,7 @@ namespace FreeCourse.Services.Basket
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

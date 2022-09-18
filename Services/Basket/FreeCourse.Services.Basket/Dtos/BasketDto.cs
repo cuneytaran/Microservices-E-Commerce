@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Basket.Dtos
-{
+{//sepeti tutacak bölüm
     public class BasketDto
     {
         public string UserId { get; set; }
 
-        public string DiscountCode { get; set; }
+        public string DiscountCode { get; set; }//indirim kodu
 
         public int? DiscountRate { get; set; }
-        public List<BasketItemDto> basketItems { get; set; }
+        public List<BasketItemDto> basketItems { get; set; }//ürünler
 
         public decimal TotalPrice
         {

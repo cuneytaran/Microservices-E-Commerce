@@ -17,6 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    //canlıda ayağa kalktığında 
     "FreeCourse.Services.Basket": {
       "commandName": "Project",
       "dotnetRunMessages": "true",

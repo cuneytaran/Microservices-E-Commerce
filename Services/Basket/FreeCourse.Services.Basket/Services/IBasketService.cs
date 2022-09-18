@@ -11,7 +11,7 @@ namespace FreeCourse.Services.Basket.Services
     {
         Task<Response<BasketDto>> GetBasket(string userId);
 
-        Task<Response<bool>> SaveOrUpdate(BasketDto basketDto);
+        Task<Response<bool>> SaveOrUpdate(BasketDto basketDto);//ekleme ve güncellemeyi aynı anda yapacak. yoksa oluşturacak varsa update yapacak
 
         Task<Response<bool>> Delete(string userId);
     }

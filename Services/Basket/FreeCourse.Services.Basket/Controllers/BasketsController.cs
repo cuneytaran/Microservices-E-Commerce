@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Basket.Controllers
 {
+    //referans olarak shared eklemeyi unutma
+    //Redis yüklemek için nuget paketden SatckExchange.Redis yükle
+    //TODO:appsettings.json ezme işlemi
+    //.net core canlıda ilk envoirement lere bakar sonra appsettinglere bakar. envoirement boş ise. O yüzden localhostlar tanımlanan yerler envoirementte ezilerek localhost yerine normal adresle değiştirilir.
+    
     [Route("api/[controller]")]
     [ApiController]
     public class BasketsController : CustomBaseController
