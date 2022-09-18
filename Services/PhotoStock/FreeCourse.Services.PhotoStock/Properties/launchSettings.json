@@ -17,6 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    //sunucu ayağa kalktığında burası çalışacak
     "FreeCourse.Services.PhotoStock": {
       "commandName": "Project",
       "dotnetRunMessages": "true",

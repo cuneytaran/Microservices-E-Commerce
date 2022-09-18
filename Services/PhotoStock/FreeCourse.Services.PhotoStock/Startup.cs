@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,16 +24,18 @@ namespace FreeCourse.Services.PhotoStock
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
+            //nuget packet den. Microsoft.AspNetcore.Authentication.JwtBearer kur
+            //photo apiyi koruma altına alıyoruz.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.Authority = Configuration["IdentityServerURL"];
-                options.Audience = "resource_photo_stock";
-                options.RequireHttpsMetadata = false;
+                options.Authority = Configuration["IdentityServerURL"];//appsetting.json dan bilgiyi al.
+                options.Audience = "resource_photo_stock";//token içinde Aud ekle.
+                options.RequireHttpsMetadata = false;//https i kaldırmak için kullandık.
             });
-
+            //proje çalıştığnda otomatik olarak Authorize devreye girecek. normalde controller başına yazman gerekiyordu.
             services.AddControllers(opt =>
             {
                 opt.Filters.Add(new AuthorizeFilter());
@@ -44,7 +46,7 @@ namespace FreeCourse.Services.PhotoStock
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -53,9 +55,9 @@ namespace FreeCourse.Services.PhotoStock
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FreeCourse.Services.PhotoStock v1"));
             }
-            app.UseStaticFiles();
+            app.UseStaticFiles();//dosyalara public olarak dışarıdan erişimi sağladık.
             app.UseRouting();
-            app.UseAuthentication();
+            app.UseAuthentication();//apiyi korumaya alıyoruz.
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

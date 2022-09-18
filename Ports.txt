@@ -1,4 +1,5 @@
-﻿Services
+﻿Properties klasörün içindeki launchSettings.json içinde hangi porttan çalıştığını görebilirsin.
+Services
 	-catalogAPI=>  5011
 	-photostockAPI => 5012
 	-basketAPI => 5013
@@ -9,7 +10,7 @@ identityserver=> 5001
 Gateway => 5000
 Web => 5010
 
-***IDENTITY ***
+*** IDENTITY ***
 Identityserver kurulumu. identity clasörün içindeki controllerin içindeki user içinde var.
 burdaki cliendid yi kurumid gibi düşünebilirsin. 
 clientsecret gizli şifre kodu
@@ -114,7 +115,7 @@ postman ile dönen bilgi
 "DefaultConnection": "Server=localhost,1433;Database=IdentityDb; User Id=sa; Password=Password12*;Integrated Security=False;Trusted_Connection=True; MultipleActiveResultSets=true"
 Discorey endpoint kullanıldı
 
-***MONGO DB BİLGİLERİ 
+*** MONGO DB BİLGİLERİ *** 
   "DatabaseSettings": {
     "CourseCollectionName": "Courses",
     "CategoryCollectionName": "Categories",
@@ -123,7 +124,7 @@ Discorey endpoint kullanıldı
     //startupda IConfiguration da tanımlamak yerine yeni bir bir class oluşturuyoruz. Settings klasörün içinde (namespace FreeCourse.Services.Catalog.Settings) IDatabaseSettings adında bir interface oluşturuyoruz.
   },
 
-  ***User kayıt olması işlemi
+  *** User kayıt olması işlemi ***
   Identity server klasörün içinde controller içindeki User içinde buluyor
 
   *** client token almak için yapılması gerekenler POSTMAN ile ***
@@ -156,7 +157,7 @@ Discorey endpoint kullanıldı
   ]
 }
 
-**Token devreye sokma
+*** Token devreye sokma ***
 
 token devreye sokmak için nuget ten  Microsoft.AspNetCore.Authentication.JwtBearer yükle
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
