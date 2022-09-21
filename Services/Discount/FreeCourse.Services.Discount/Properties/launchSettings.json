@@ -8,6 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    //çalışma anında
     "FreeCourse.Services.Discount": {
       "commandName": "Project",
       "launchUrl": "swagger",

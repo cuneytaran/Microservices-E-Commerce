@@ -12,6 +12,9 @@ namespace FreeCourse.Services.Discount.Services
 {
     public class DiscountService : IDiscountService
     {
+        //TODO:dapper servis kısmı. query sorguları var.
+        //Npgsql nugetten yükle. PostgreSQL için.
+
         private readonly IConfiguration _configuration;
         private readonly IDbConnection _dbConnection;
 
@@ -19,7 +22,50 @@ namespace FreeCourse.Services.Discount.Services
         {
             _configuration = configuration;
 
-            _dbConnection = new NpgsqlConnection(_configuration.GetConnectionString("PostgreSql"));
+            _dbConnection = new NpgsqlConnection(_configuration.GetConnectionString("PostgreSql"));//appsettings.json dan PostgreSql connection bilgisini alıyor
+        }
+
+        public async Task<Response<List<Models.Discount>>> GetAll()
+        {
+            var discounts = await _dbConnection.QueryAsync<Models.Discount>("Select * from discount");//QueryAsync=dapper içinden gelen bir kod, discount=model içinde küçük harf olarak tanımladığımız için direk modele dolduracak
+
+            return Response<List<Models.Discount>>.Success(discounts.ToList(), 200);
+        }
+
+        public async Task<Response<Models.Discount>> GetById(int id)
+        {
+            var discount = (await _dbConnection.QueryAsync<Models.Discount>("select * from discount where id=@Id", new { Id = id })).SingleOrDefault();//new { Id = id } burdaki ikId sqle gönderilecek Id numarası.
+
+            if (discount == null)
+            {
+                return Response<Models.Discount>.Fail("Discount not found", 404);
+            }
+
+            return Response<Models.Discount>.Success(discount, 200);
+        }
+
+        public async Task<Response<NoContent>> Save(Models.Discount discount)
+        {
+            var saveStatus = await _dbConnection.ExecuteAsync("INSERT INTO discount (userid,rate,code) VALUES(@UserId,@Rate,@Code)", discount);//(userid,rate,code) VALUES(@UserId,@Rate,@Code) ilk parantezdeki @UserId,@Rate,@Code modelden gelen sıralamayla  ismi aynı olmalı
+
+            if (saveStatus > 0)
+            {
+                return Response<NoContent>.Success(204);
+            }
+
+            return Response<NoContent>.Fail("an error occurred while adding", 500);
+        }
+
+        public async Task<Response<NoContent>> Update(Models.Discount discount)
+        {
+            var status = await _dbConnection.ExecuteAsync("update discount set userid=@UserId, code=@Code, rate=@Rate where id=@Id", new { Id = discount.Id, UserId = discount.UserId, Code = discount.Code, Rate = discount.Rate });//@UserId new deki UserId ye denk geliyor.
+
+            if (status > 0)
+            {
+                return Response<NoContent>.Success(204);
+            }
+
+            return Response<NoContent>.Fail("Discount not found", 404);
         }
 
         public async Task<Response<NoContent>> Delete(int id)
@@ -27,13 +73,6 @@ namespace FreeCourse.Services.Discount.Services
             var status = await _dbConnection.ExecuteAsync("delete from discount where id=@Id", new { Id = id });
 
             return status > 0 ? Response<NoContent>.Success(204) : Response<NoContent>.Fail("Discount not found", 404);
-        }
-
-        public async Task<Response<List<Models.Discount>>> GetAll()
-        {
-            var discounts = await _dbConnection.QueryAsync<Models.Discount>("Select * from discount");
-
-            return Response<List<Models.Discount>>.Success(discounts.ToList(), 200);
         }
 
         public async Task<Response<Models.Discount>> GetByCodeAndUserId(string code, string userId)
@@ -50,40 +89,7 @@ namespace FreeCourse.Services.Discount.Services
             return Response<Models.Discount>.Success(hasDiscount, 200);
         }
 
-        public async Task<Response<Models.Discount>> GetById(int id)
-        {
-            var discount = (await _dbConnection.QueryAsync<Models.Discount>("select * from discount where id=@Id", new { Id = id })).SingleOrDefault();
-
-            if (discount == null)
-            {
-                return Response<Models.Discount>.Fail("Discount not found", 404);
-            }
-
-            return Response<Models.Discount>.Success(discount, 200);
-        }
-
-        public async Task<Response<NoContent>> Save(Models.Discount discount)
-        {
-            var saveStatus = await _dbConnection.ExecuteAsync("INSERT INTO discount (userid,rate,code) VALUES(@UserId,@Rate,@Code)", discount);
-
-            if (saveStatus > 0)
-            {
-                return Response<NoContent>.Success(204);
-            }
-
-            return Response<NoContent>.Fail("an error occurred while adding", 500);
-        }
-
-        public async Task<Response<NoContent>> Update(Models.Discount discount)
-        {
-            var status = await _dbConnection.ExecuteAsync("update discount set userid=@UserId, code=@Code, rate=@Rate where id=@Id", new { Id = discount.Id, UserId = discount.UserId, Code = discount.Code, Rate = discount.Rate });
-
-            if (status > 0)
-            {
-                return Response<NoContent>.Success(204);
-            }
-
-            return Response<NoContent>.Fail("Discount not found", 404);
-        }
     }
 }
+
+//Startup içine işlemeyi unutma

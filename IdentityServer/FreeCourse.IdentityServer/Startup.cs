@@ -15,6 +15,7 @@ using FreeCourse.IdentityServer.Services;
 
 namespace FreeCourse.IdentityServer
 {
+    //nugetten Microsoft.AspNetCore.Authentication.JwtBearer yükle
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }

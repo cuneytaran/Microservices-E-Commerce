@@ -10,12 +10,19 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Discount.Controllers
 {
+    //referans olarak shared eklemeyi unutma
+    //Redis yüklemek için nuget paketden SatckExchange.Redis yükle
+    //Dapper yüklemek için nuget paketden Dapper.Contrib yükle
+    //TODO:appsettings.json ezme işlemi
+    //.net core canlıda ilk envoirement lere bakar sonra appsettinglere bakar. envoirement boş ise. O yüzden localhostlar tanımlanan yerler envoirementte ezilerek localhost yerine normal adresle değiştirilir.
+
+
+    //Authurize eklemeye gerek yok. çünkü startupda bunu tanımladık. otomatik olarak authurize oluyor.
     [Route("api/[controller]")]
     [ApiController]
-    public class DiscountsController : CustomBaseController
+    public class DiscountsController : CustomBaseController//custombasecontrolleden base alıyoruz ki. çünkü CreateActionResultInstance yardımcı metodu alıyoruz.
     {
-        private readonly IDiscountService _discountService;
-
+        private readonly IDiscountService _discountService;//interfaceleri tanımlıyoruz
         private readonly ISharedIdentityService _sharedIdentityService;
 
         public DiscountsController(IDiscountService discountService, ISharedIdentityService sharedIdentityService)
@@ -39,12 +46,13 @@ namespace FreeCourse.Services.Discount.Controllers
             return CreateActionResultInstance(discount);
         }
 
+
         [HttpGet]
         [Route("/api/[controller]/[action]/{code}")]
         public async Task<IActionResult> GetByCode(string code)
 
         {
-            var userId = _sharedIdentityService.GetUserId;
+            var userId = _sharedIdentityService.GetUserId;//token içinden userid bilgisini çekiyor.
 
             var discount = await _discountService.GetByCodeAndUserId(code, userId);
 

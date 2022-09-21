@@ -6,10 +6,16 @@ using static IdentityServer4.Events.TokenIssuedSuccessEvent;
 
 namespace FreeCourse.IdentityServer
 {
+
+    //NOT:******SERVİSİ KORUMA ALTINA ALMAK İÇİN = ilk ApiScopes içine yaz sonra ApiResources sonra  new Client içine doldur******
+
+
+
     //Burası hangi identity serverden kimden token alacak, hangi microservislere istek yapılacağını belirleyecek
     //Reasurce identity de JWT token içinde = catolog için mesela mutlaka Aud:Reasurce_catalogda olması lazımm ve Scope:coursecatalog_fullpermission olması gerekiyor.istek yapıldığında JWT içinde bu bahsettiklerimi barındırır.diğerleride barındırır ama bunların iki özelliği olması gerekiyor.
     public static class Config
     {
+        //TODO:servisleri koruma altına alma 2 RESOURCES
         public static IEnumerable<ApiResource> ApiResources => new ApiResource[]//Aud lara karşılık geliyor
         {
             new ApiResource("resource_catalog"){Scopes={"catalog_fullpermission"}},//catalog için full erişim.catalog_fullpermission=ApiScopes den bilgi alıyor.istek yapması gerekli
@@ -32,6 +38,7 @@ namespace FreeCourse.IdentityServer
                        new IdentityResource(){ Name="roles", DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new []{ "role"} }//gönderilirken kullanıcının name,role gönderilecek bilgiler.
                    };
 
+        //TODO:servisleri koruma altına alma 1
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]//
             {
@@ -88,3 +95,4 @@ namespace FreeCourse.IdentityServer
             };
     }
 }
+

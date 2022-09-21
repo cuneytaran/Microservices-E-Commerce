@@ -17,7 +17,7 @@ namespace FreeCourse.Shared.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetUserId => _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
+        public string GetUserId => _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;//burdaki sub, token içinde sub diye veri var bu aslında userid dir.
         //public string GetUserId => _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == "sub").FirstOrDefault().Value; //üst satırla aynı işlemi yapıyor.
         //buradaki claims dediğimiz. token içindeki sub gibi user bilgilerinin tutulduğu yerdir.
     }

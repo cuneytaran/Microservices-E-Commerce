@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Discount
 {
+    //nugetten Microsoft.AspNetCore.Authentication.JwtBearer yükle
+    //Basket deki startup ile ayný
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -28,7 +30,7 @@ namespace FreeCourse.Services.Discount
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
@@ -54,7 +56,7 @@ namespace FreeCourse.Services.Discount
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

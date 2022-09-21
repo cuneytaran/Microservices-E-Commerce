@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Discount.Models
 {
+    //TODO:Dapper sql tablosuna model ile eşitliyor.yani mapleme işlemi
     [Dapper.Contrib.Extensions.Table("discount")]
     public class Discount
     {
